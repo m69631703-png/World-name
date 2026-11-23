@@ -1,97 +1,134 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>تسمية دول العالم بالعربي | تحدي أسماء الدول</title>
-<meta name="description" content="اختبر ذاكرتك في تحدي تسمية دول العالم بالعربي. اكتب أسماء 195 دولة على خريطة العالم خلال 15 دقيقة.">
-<meta name="keywords" content="تسمية دول العالم بالعربي, أسماء الدول بالعربي, تحدي الدول, خريطة العالم">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسمية دول العالم بالعربي</title>
+<meta name="description" content="تحدي تسمية دول العالم بالعربي على خريطة تفاعلية. اختبر معلوماتك الجغرافية وحاول اكتشاف جميع دول العالم خلال 15 دقيقة.">
+<meta name="keywords" content="تسمية دول العالم بالعربي, لعبة الدول, خريطة العالم, تحدي جغرافيا, أسماء الدول">
 <meta name="robots" content="index,follow">
+<link rel="canonical" href="https://m69631703-png.github.io/World-name/">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#0b1120;color:#e5eaf4;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;padding:18px}
-.wrap{max-width:900px;margin:auto}
-h1{text-align:center;font-size:clamp(25px,5vw,36px);margin:12px 0}
-p{text-align:center;color:#aebbd0;font-size:18px}
-.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0}
-.stat{background:#192338;border:1px solid #2c3a56;border-radius:20px;padding:16px 22px;font-size:20px}
-.stat b{font-size:26px}
-.panel{background:#141e31;border:1px solid #2c3a56;border-radius:25px;padding:18px}
-.inputs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.inputs input{flex:1;min-width:220px;background:#0b1120;color:#fff;border:2px solid #34435f;border-radius:20px;padding:16px;font-size:20px;text-align:center}
-.btn{border:0;border-radius:18px;padding:16px 24px;font-size:20px;font-weight:700;background:#72a5f4;color:#071225;cursor:pointer}
-.btn.secondary{background:#2a3852;color:#eef4ff}
-.hint{text-align:center;margin:18px;color:#aebbd0}
-.mapbox{background:#0b1120;border-radius:22px;overflow:hidden;margin-top:20px;min-height:300px;position:relative}
-.mapbox svg{width:100%;height:auto;display:block;overflow:hidden}
-.country{fill:#293953;stroke:#172238;stroke-width:.6;transition:fill .2s}
-.country.found{fill:#72a5f4}
-.country:hover{fill:#496789}
-.list{margin-top:16px;background:#0b1120;border-radius:18px;padding:14px;max-height:200px;overflow:auto;color:#d7e2f3}
-.list h3{margin:0 0 10px}
-.listitems{display:flex;gap:7px;flex-wrap:wrap}
-.pill{background:#1c2940;padding:6px 10px;border-radius:12px;font-size:14px}
-.msg{text-align:center;min-height:26px;color:#9bc2ff;margin:10px}
-.suggest{background:#23334d;padding:12px;border-radius:14px;text-align:center;display:none;margin:8px 0}
-.suggest button{margin:8px}
-.foot{text-align:center;color:#78869d;font-size:13px;margin:12px}
+body{margin:0;background:#0b1220;color:#f1f5f9;font-family:Arial,sans-serif}
+header{text-align:center;padding:18px 10px}
+h1{margin:5px;font-size:25px}
+.subtitle{color:#94a3b8;font-size:14px}
+.container{max-width:1100px;margin:auto;padding:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{background:#172033;border-radius:12px;padding:12px;text-align:center}
+.stat div{font-size:12px;color:#94a3b8}
+.stat strong{display:block;font-size:23px;margin-top:5px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+input{flex:1;min-width:170px;padding:14px;border-radius:10px;border:1px solid #334155;background:#172033;color:white;font-size:16px}
+button{border:0;border-radius:10px;padding:12px 16px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(1.15)}
+button.secondary{background:#334155}
+button.danger{background:#b91c1c}
+#map{background:#111c2e;border-radius:15px;width:100%;height:500px;overflow:hidden}
+svg{width:100%;height:100%}
+.country{fill:#334155;stroke:#0b1220;stroke-width:.6;transition:fill .2s}
+.country.found{fill:#22c55e}
+.country:hover{fill:#64748b}
+.country.found:hover{fill:#16a34a}
+.bottom{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.panel{background:#172033;padding:14px;border-radius:12px;flex:1;min-width:220px}
+.panel h3{margin-top:0}
+#foundList{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:#26354b;padding:6px 9px;border-radius:8px;font-size:13px}
+.message{min-height:25px;margin:10px 0;font-weight:bold}
+.success{color:#4ade80}
+.error{color:#f87171}
+#hint{color:#fbbf24}
+@media(max-width:600px){
+.stats{grid-template-columns:repeat(2,1fr)}
+#map{height:380px}
+h1{font-size:20px}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
+<header>
 <h1>🌍 تسمية دول العالم بالعربي</h1>
-<p>اكتب أسماء الدول بالعربية من ذاكرتك — كل دولة صحيحة تُلوّن على الخريطة</p>
-
+<div class="subtitle">اكتب أسماء الدول واكتشفها على الخريطة خلال 15 دقيقة</div>
+</header>
+<div class="container">
 <div class="stats">
-<div class="stat">الدول <b id="count">0</b> / <b id="total">195</b></div>
-<div class="stat">الوقت <b id="timer">15:00</b></div>
-<div class="stat">النسبة <b id="pct">0%</b></div>
+<div class="stat"><div>الدول المكتشفة</div><strong id="score">0 / 195</strong></div>
+<div class="stat"><div>النسبة</div><strong id="percent">0%</strong></div>
+<div class="stat"><div>الوقت</div><strong id="timer">15:00</strong></div>
+<div class="stat"><div>سلسلة الإجابات</div><strong id="streak">0</strong></div>
 </div>
 
+<div class="controls">
+<input id="answer" placeholder="اكتب اسم دولة بالعربي..." autocomplete="off">
+<button id="submit">إجابة</button>
+<button class="secondary" id="pause">إيقاف مؤقت</button>
+<button class="secondary" id="hintBtn">تلميح</button>
+<button class="danger" id="reset">إعادة</button>
+</div>
+<div class="message" id="message"></div>
+<div id="hint"></div>
+<div id="map"></div>
+<div class="bottom">
 <div class="panel">
-<div class="inputs">
-<input id="answer" autocomplete="off" placeholder="اكتب اسم دولة..." aria-label="اسم الدولة">
-<button class="btn" id="start">ابدأ</button>
-</div>
-
-<div class="suggest" id="suggest"></div>
-
-<div class="inputs" style="margin-top:12px">
-<button class="btn secondary" id="show">عرض الإجابات</button>
-<button class="btn secondary" id="reset">إعادة</button>
-</div>
-
-<div class="msg" id="msg"></div>
-<div class="hint" id="hint">اضغط ابدأ لبدء تحدي الـ 15 دقيقة.</div>
-<div class="mapbox" id="map"></div>
-
-<div class="list">
 <h3>الدول المكتشفة</h3>
-<div class="listitems" id="listitems">—</div>
+<div id="foundList"></div>
+</div>
+<div class="panel">
+<h3>طريقة اللعب</h3>
+<p>اكتب اسم الدولة بالعربية. الأسماء البديلة والأخطاء الإملائية البسيطة مقبولة.</p>
+<p>هدفك اكتشاف 195 دولة قبل انتهاء الوقت.</p>
+<button class="secondary" id="showAnswers">عرض الدول المتبقية</button>
 </div>
 </div>
-<div class="foot">قد يتطلب تحميل الخريطة اتصالاً بالإنترنت.</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
-
 <script>
+const countries=[
+"Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan",
+"Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi",
+"Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia",
+"Denmark","Djibouti","Dominica","Dominican Republic",
+"Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia",
+"Fiji","Finland","France",
+"Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana",
+"Haiti","Honduras","Hungary",
+"Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy",
+"Jamaica","Japan","Jordan",
+"Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan",
+"Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg",
+"Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar",
+"Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway",
+"Oman",
+"Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal",
+"Qatar",
+"Romania","Russia","Rwanda",
+"Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
+"Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
+"Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan",
+"Vanuatu","Vatican City","Venezuela","Vietnam",
+"Yemen",
+"Zambia","Zimbabwe"
+];
+
 const aliases={
 "Afghanistan":["أفغانستان","افغانستان"],
-"Albania":["ألبانيا"],
+"Albania":["ألبانيا","البانيا"],
 "Algeria":["الجزائر"],
-"Andorra":["أندورا"],
-"Angola":["أنغولا"],
+"Andorra":["أندورا","اندورا"],
+"Angola":["أنغولا","انجولا","أنجولا"],
 "Antigua and Barbuda":["أنتيغوا وبربودا","انتيغوا وبربودا"],
 "Argentina":["الأرجنتين","ارجنتين"],
-"Armenia":["أرمينيا"],
+"Armenia":["أرمينيا","ارمينيا"],
 "Australia":["أستراليا","استراليا"],
 "Austria":["النمسا"],
-"Azerbaijan":["أذربيجان"],
-"Bahamas":["الباهاما"],
+"Azerbaijan":["أذربيجان","اذربيجان"],
+"Bahamas":["البهاما","باهاماس"],
 "Bahrain":["البحرين"],
-"Bangladesh":["بنغلاديش"],
+"Bangladesh":["بنغلاديش","بنگلاديش","بنجلاديش","بانغلاديش"],
 "Barbados":["باربادوس"],
 "Belarus":["بيلاروس","روسيا البيضاء"],
 "Belgium":["بلجيكا"],
@@ -99,25 +136,24 @@ const aliases={
 "Benin":["بنين"],
 "Bhutan":["بوتان"],
 "Bolivia":["بوليفيا"],
-"Bosnia and Herzegovina":["البوسنة","البوسنة والهرسك","البوسنه","البوسنه والهرسك"],
+"Bosnia and Herzegovina":["البوسنة والهرسك","البوسنه والهرسك","البوسنة","البوسنه"],
 "Botswana":["بوتسوانا"],
 "Brazil":["البرازيل"],
 "Brunei":["بروناي"],
 "Bulgaria":["بلغاريا"],
 "Burkina Faso":["بوركينا فاسو"],
 "Burundi":["بوروندي"],
+"Cabo Verde":["الرأس الأخضر","راس الاخضر","كابو فيردي"],
 "Cambodia":["كمبوديا"],
 "Cameroon":["الكاميرون"],
 "Canada":["كندا"],
-"Cape Verde":["الرأس الأخضر","كاب فيردي"],
 "Central African Republic":["جمهورية أفريقيا الوسطى","افريقيا الوسطى"],
 "Chad":["تشاد"],
 "Chile":["تشيلي"],
 "China":["الصين"],
 "Colombia":["كولومبيا"],
 "Comoros":["جزر القمر"],
-"Republic of the Congo":["الكونغو","كونغو"],
-"Democratic Republic of the Congo":["الكونغو الديمقراطية","جمهورية الكونغو الديمقراطية"],
+"Congo":["الكونغو","كونغو"],
 "Costa Rica":["كوستاريكا"],
 "Croatia":["كرواتيا"],
 "Cuba":["كوبا"],
@@ -127,47 +163,47 @@ const aliases={
 "Djibouti":["جيبوتي"],
 "Dominica":["دومينيكا"],
 "Dominican Republic":["جمهورية الدومينيكان","الدومينيكان"],
-"Ecuador":["الإكوادور"],
+"Ecuador":["الإكوادور","الاكوادور"],
 "Egypt":["مصر"],
 "El Salvador":["السلفادور"],
 "Equatorial Guinea":["غينيا الاستوائية"],
-"Eritrea":["إريتريا"],
-"Estonia":["إستونيا"],
-"Eswatini":["إسواتيني","سوازيلاند"],
-"Ethiopia":["إثيوبيا"],
+"Eritrea":["إريتريا","اريتريا"],
+"Estonia":["إستونيا","استونيا"],
+"Eswatini":["إسواتيني","اسواتيني","سوازيلاند"],
+"Ethiopia":["إثيوبيا","اثيوبيا"],
 "Fiji":["فيجي"],
 "Finland":["فنلندا"],
 "France":["فرنسا"],
-"Gabon":["الغابون"],
-"Gambia":["غامبيا"],
+"Gabon":["الغابون","جابون"],
+"Gambia":["غامبيا","جامبيا"],
 "Georgia":["جورجيا"],
-"Germany":["ألمانيا"],
-"Ghana":["غانا"],
+"Germany":["ألمانيا","المانيا"],
+"Ghana":["غانا","جانا"],
 "Greece":["اليونان"],
-"Grenada":["غرينادا"],
-"Guatemala":["غواتيمالا"],
+"Grenada":["غرينادا","جرينادا"],
+"Guatemala":["غواتيمالا","جواتيمالا"],
 "Guinea":["غينيا"],
 "Guinea-Bissau":["غينيا بيساو"],
-"Guyana":["غيانا"],
+"Guyana":["غيانا","جويانا"],
 "Haiti":["هايتي"],
 "Honduras":["هندوراس"],
 "Hungary":["المجر","هنغاريا"],
-"Iceland":["آيسلندا"],
+"Iceland":["آيسلندا","ايسلندا"],
 "India":["الهند"],
-"Indonesia":["إندونيسيا"],
-"Iran":["إيران"],
+"Indonesia":["إندونيسيا","اندونيسيا"],
+"Iran":["إيران","ايران"],
 "Iraq":["العراق"],
-"Ireland":["أيرلندا"],
-"Israel":["إسرائيل"],
-"Italy":["إيطاليا"],
-"Jamaica":["جامايكا"],
+"Ireland":["أيرلندا","ايرلندا"],
+"Israel":["إسرائيل","اسرائيل"],
+"Italy":["إيطاليا","ايطاليا"],
+"Jamaica":["جامايكا","جمايكا"],
 "Japan":["اليابان"],
-"Jordan":["الأردن"],
+"Jordan":["الأردن","الاردن"],
 "Kazakhstan":["كازاخستان"],
 "Kenya":["كينيا"],
 "Kiribati":["كيريباتي"],
 "Kuwait":["الكويت"],
-"Kyrgyzstan":["قيرغيزستان"],
+"Kyrgyzstan":["قيرغيزستان","قرغيزستان"],
 "Laos":["لاوس"],
 "Latvia":["لاتفيا"],
 "Lebanon":["لبنان"],
@@ -176,7 +212,7 @@ const aliases={
 "Libya":["ليبيا"],
 "Liechtenstein":["ليختنشتاين"],
 "Lithuania":["ليتوانيا"],
-"Luxembourg":["لوكسمبورغ"],
+"Luxembourg":["لوكسمبورغ","لوكسمبورج"],
 "Madagascar":["مدغشقر"],
 "Malawi":["مالاوي"],
 "Malaysia":["ماليزيا"],
@@ -190,15 +226,15 @@ const aliases={
 "Micronesia":["ميكرونيزيا"],
 "Moldova":["مولدوفا"],
 "Monaco":["موناكو"],
-"Mongolia":["منغوليا"],
-"Montenegro":["الجبل الأسود"],
+"Mongolia":["منغوليا","مونغوليا"],
+"Montenegro":["الجبل الأسود","الجبل الاسود"],
 "Morocco":["المغرب"],
 "Mozambique":["موزمبيق"],
 "Myanmar":["ميانمار","بورما"],
 "Namibia":["ناميبيا"],
 "Nauru":["ناورو"],
 "Nepal":["نيبال"],
-"Netherlands":["هولندا"],
+"Netherlands":["هولندا","الأراضي المنخفضة"],
 "New Zealand":["نيوزيلندا"],
 "Nicaragua":["نيكاراغوا"],
 "Niger":["النيجر"],
@@ -212,7 +248,7 @@ const aliases={
 "Palestine":["فلسطين"],
 "Panama":["بنما"],
 "Papua New Guinea":["بابوا غينيا الجديدة"],
-"Paraguay":["باراغواي","باراجواي","البرغواي","برغواي"],
+"Paraguay":["باراغواي","باراجواي","الباراغواي","الباراجواي","البرغواي","برغواي","براغواي","بارغواي","باراغواي"],
 "Peru":["بيرو"],
 "Philippines":["الفلبين"],
 "Poland":["بولندا"],
@@ -226,7 +262,7 @@ const aliases={
 "Saint Vincent and the Grenadines":["سانت فنسنت والغرينادين"],
 "Samoa":["ساموا"],
 "San Marino":["سان مارينو"],
-"Sao Tome and Principe":["ساو تومي وبرينسيبي"],
+"Sao Tome and Principe":["ساو تومي وبرينسيب"],
 "Saudi Arabia":["السعودية","المملكة العربية السعودية"],
 "Senegal":["السنغال"],
 "Serbia":["صربيا"],
@@ -237,20 +273,20 @@ const aliases={
 "Slovenia":["سلوفينيا"],
 "Solomon Islands":["جزر سليمان"],
 "Somalia":["الصومال"],
-"South Africa":["جنوب أفريقيا"],
+"South Africa":["جنوب أفريقيا","جنوب افريقيا"],
 "South Korea":["كوريا الجنوبية"],
 "South Sudan":["جنوب السودان"],
-"Spain":["إسبانيا"],
+"Spain":["إسبانيا","اسبانيا"],
 "Sri Lanka":["سريلانكا"],
 "Sudan":["السودان"],
 "Suriname":["سورينام"],
 "Sweden":["السويد"],
 "Switzerland":["سويسرا"],
-"Syria":["سوريا","سورية"],
+"Syria":["سوريا"],
 "Taiwan":["تايوان"],
 "Tajikistan":["طاجيكستان"],
 "Tanzania":["تنزانيا"],
-"Thailand":["تايلاند"],
+"Thailand":["تايلاند","تايلند"],
 "Timor-Leste":["تيمور الشرقية"],
 "Togo":["توغو"],
 "Tonga":["تونغا"],
@@ -259,165 +295,213 @@ const aliases={
 "Turkey":["تركيا"],
 "Turkmenistan":["تركمانستان"],
 "Tuvalu":["توفالو"],
-"Uganda":["أوغندا"],
-"Ukraine":["أوكرانيا"],
-"United Arab Emirates":["الإمارات","الإمارات العربية المتحدة"],
-"United Kingdom":["بريطانيا","المملكة المتحدة","انجلترا","إنجلترا","ويلز","وِيلز"],
-"United States of America":["أمريكا","الولايات المتحدة","الولايات المتحدة الأمريكية"],
-"Uruguay":["أوروغواي","الأوروغواي","اورغواي","الأورغواي","الاورغواي","أورغواي"],
-"Uzbekistan":["أوزبكستان"],
+"Uganda":["أوغندا","اوغندا"],
+"Ukraine":["أوكرانيا","اوكرانيا"],
+"United Arab Emirates":["الإمارات","الامارات","الإمارات العربية المتحدة"],
+"United Kingdom":["بريطانيا","المملكة المتحدة","ويلز","وِيلز","wales","انجلترا","إنجلترا","اسكتلندا","سكوتلندا"],
+"United States":["الولايات المتحدة","أمريكا","امريكا","الولايات المتحدة الأمريكية","الولايات المتحده"],
+"Uruguay":["أوروغواي","الأوروغواي","اورغواي","الأورغواي","الاورغواي","أورغواي","اورواي","البرغواي"],
+"Uzbekistan":["أوزبكستان","اوزبكستان"],
 "Vanuatu":["فانواتو"],
-"Vatican":["الفاتيكان"],
+"Vatican City":["الفاتيكان"],
 "Venezuela":["فنزويلا"],
 "Vietnam":["فيتنام"],
 "Yemen":["اليمن"],
-"Zambia":["زيمبابوي"],
+"Zambia":["زامبيا"],
 "Zimbabwe":["زيمبابوي"]
 };
 
-const mapNames={
-"Czechia":"Czech Republic",
-"Democratic Republic of the Congo":"Dem. Rep. Congo",
-"Republic of the Congo":"Congo",
-"South Sudan":"South Sudan",
-"North Korea":"North Korea",
-"South Korea":"South Korea",
-"Eswatini":"eSwatini",
-"United States of America":"United States of America",
-"Vatican":"Vatican",
-"Palestine":"Palestine",
-"Taiwan":"Taiwan"
-};
-
-const norm=s=>s.toLowerCase().trim()
+function norm(s){
+return s.toLowerCase()
 .replace(/[أإآ]/g,"ا")
+.replace(/ؤ/g,"و")
+.replace(/ئ/g,"ي")
 .replace(/ى/g,"ي")
-.replace(/[ًٌٍَُِّْ]/g,"")
-.replace(/[ـ]/g,"")
-.replace(/\s+/g," ");
-
-let aliasMap={},found=new Set(),running=false,remaining=900,timerInt=null,features=[];
-
-for(const [k,arr] of Object.entries(aliases)){
-aliasMap[norm(k)]=k;
-arr.forEach(a=>aliasMap[norm(a)]=k);
+.replace(/ة/g,"ه")
+.replace(/ـ/g,"")
+.replace(/[^\u0600-\u06FFa-z0-9]/g,"")
+.trim();
 }
 
-const input=document.getElementById('answer');
-const msg=document.getElementById('msg');
-const suggest=document.getElementById('suggest');
+const allNames={};
+countries.forEach(c=>{
+allNames[c]=[c,...(aliases[c]||[])];
+});
+
+let found=new Set();
+let seconds=900;
+let paused=false;
+let streak=0;
+let gameOver=false;
+let projection,path,svg;
+const message=document.getElementById("message");
+const input=document.getElementById("answer");
 
 function update(){
-document.getElementById('count').textContent=found.size;
-document.getElementById('pct').textContent=Math.round(found.size/195*100)+'%';
-document.getElementById('listitems').innerHTML=found.size?[...found].map(x=>`<span class="pill">${aliases[x]?.[0]||x}</span>`).join(''):'—';
+document.getElementById("score").textContent=found.size+" / 195";
+document.getElementById("percent").textContent=Math.round(found.size/195*100)+"%";
+document.getElementById("streak").textContent=streak;
+document.getElementById("timer").textContent=
+Math.floor(seconds/60).toString().padStart(2,"0")+":"+
+(seconds%60).toString().padStart(2,"0");
+document.getElementById("foundList").innerHTML=
+[...found].sort((a,b)=>a.localeCompare(b)).map(c=>'<span class="tag">'+aliases[c]?.[0]||c+'</span>').join("");
 }
 
-function clock(){
-let m=Math.floor(remaining/60),s=remaining%60;
-document.getElementById('timer').textContent=`${m}:${String(s).padStart(2,'0')}`;
-if(remaining<=0){stop();msg.textContent='انتهى الوقت!';showAnswers()}
+function checkAnswer(){
+if(gameOver||paused)return;
+let raw=input.value.trim();
+if(!raw)return;
+let n=norm(raw);
+let matched=null;
+for(const c of countries){
+if(found.has(c))continue;
+if((allNames[c]||[]).some(a=>norm(a)===n)){
+matched=c;break;
 }
-
-function start(){
-if(running)return;
-running=true;
-document.getElementById('hint').textContent='اكتب أسماء الدول، واضغط Enter لإرسال الإجابة.';
-timerInt=setInterval(()=>{remaining--;clock()},1000);
+}
+if(matched){
+found.add(matched);
+streak++;
+message.textContent="✔ إجابة صحيحة: "+(aliases[matched]?.[0]||matched);
+message.className="message success";
+document.querySelectorAll('[data-country="'+matched+'"]').forEach(el=>el.classList.add("found"));
+if(streak===5)message.textContent+=" 🔥 خمس إجابات متتالية!";
+if(found.size===195){gameOver=true;message.textContent="🎉 مذهل! اكتشفت جميع الدول!";clearInterval(timerInterval);}
+}else{
+streak=0;
+let close=null;
+for(const c of countries){
+if(found.has(c))continue;
+if((allNames[c]||[]).some(a=>norm(a).includes(n)||n.includes(norm(a))&&n.length>3)){
+close=c;break;
+}
+}
+if(close){
+message.textContent="❌ غير مطابقة تمامًا. هل تقصد "+(aliases[close]?.[0]||close)+"؟";
+}else{
+message.textContent="❌ لم نتعرف على الاسم، حاول مرة أخرى.";
+}
+message.className="message error";
+}
+input.value="";
+update();
 input.focus();
 }
 
-function stop(){
-running=false;
-clearInterval(timerInt);
-}
+document.getElementById("submit").onclick=checkAnswer;
+input.addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
 
-function reset(){
-stop();
-remaining=900;
-found.clear();
-clock();
+document.getElementById("hintBtn").onclick=()=>{
+if(gameOver)return;
+let remaining=countries.filter(c=>!found.has(c));
+if(!remaining.length)return;
+let c=remaining[Math.floor(Math.random()*remaining.length)];
+document.getElementById("hint").textContent="💡 تلميح: "+(aliases[c]?.[0]||c).slice(0,2)+"...";
+};
+
+document.getElementById("pause").onclick=()=>{
+paused=!paused;
+document.getElementById("pause").textContent=paused?"استئناف":"إيقاف مؤقت";
+message.textContent=paused?"⏸ اللعبة متوقفة":"▶ اللعبة مستمرة";
+};
+
+document.getElementById("reset").onclick=()=>{
+if(!confirm("هل تريد إعادة اللعبة من البداية؟"))return;
+found.clear();seconds=900;paused=false;streak=0;gameOver=false;
+document.getElementById("pause").textContent="إيقاف مؤقت";
+document.getElementById("hint").textContent="";
+message.textContent="";
+document.querySelectorAll(".country").forEach(el=>el.classList.remove("found"));
 update();
-input.value='';
-msg.textContent='';
-suggest.style.display='none';
-document.querySelectorAll('.country.found').forEach(p=>p.classList.remove('found'));
-document.getElementById('hint').textContent='اضغط ابدأ لبدء تحدي الـ 15 دقيقة.';
+};
+
+document.getElementById("showAnswers").onclick=()=>{
+if(!confirm("هل تريد عرض جميع الدول المتبقية؟"))return;
+gameOver=true;
+clearInterval(timerInterval);
+let remaining=countries.filter(c=>!found.has(c)).map(c=>aliases[c]?.[0]||c);
+message.textContent="الدول المتبقية: "+remaining.join("، ");
+};
+
+let timerInterval=setInterval(()=>{
+if(paused||gameOver)return;
+seconds--;
+if(seconds<=0){
+seconds=0;gameOver=true;
+message.textContent="انتهى الوقت! اكتشفت "+found.size+" من 195 دولة.";
 }
-
-function submit(){
-if(!running)start();
-let v=norm(input.value);
-if(!v)return;
-let key=aliasMap[v];
-
-if(key&&!found.has(key)){
-found.add(key);
-let featureName=mapNames[key]||key;
-let p=document.querySelector(`[data-name="${CSS.escape(featureName)}"]`);
-if(!p)p=document.querySelector(`[data-name="${CSS.escape(key)}"]`);
-if(p)p.classList.add('found');
-msg.textContent='صحيح! 🎉';
-msg.style.color='#9bc2ff';
-input.value='';
-suggest.style.display='none';
 update();
-if(found.size>=195){stop();msg.textContent='مذهل! أكملت جميع الدول!'}
-}
-else if(key&&found.has(key)){
-msg.textContent='هذه الدولة سبق أن كتبتها.';
-suggest.style.display='none';
-}
-else{
-let candidate=Object.keys(aliasMap).find(a=>a.length>2&&(a.includes(v)||v.includes(a)));
-if(candidate){
-let c=aliasMap[candidate];
-suggest.innerHTML=`هل تقصد <b>${aliases[c]?.[0]||c}</b>؟ <button class="btn" id="yes">نعم</button> <button class="btn secondary" id="no">لا</button>`;
-suggest.style.display='block';
-document.getElementById('yes').onclick=()=>{input.value=aliases[c]?.[0]||c;submit()};
-document.getElementById('no').onclick=()=>{suggest.style.display='none';msg.textContent='حاول مرة أخرى.'};
-}
-else{
-msg.textContent='لم أتعرف على الدولة، حاول كتابة الاسم بشكل مختلف.';
-suggest.style.display='none';
-}
-}
-input.focus();
-}
+},1000);
 
-function showAnswers(){
-stop();
-msg.textContent='الدول التي لم تكتشفها تظهر بأسمائها هنا:';
-document.getElementById('listitems').innerHTML=Object.keys(aliases).map(k=>`<span class="pill" style="opacity:${found.has(k)?'.5':'1'}">${aliases[k][0]}${found.has(k)?' ✓':''}</span>`).join('');
-}
-
-document.getElementById('start').onclick=start;
-document.getElementById('reset').onclick=reset;
-document.getElementById('show').onclick=showAnswers;
-input.addEventListener('keydown',e=>{if(e.key==='Enter')submit()});
-clock();
 update();
 
-fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+const mapDiv=document.getElementById("map");
+svg=d3.select(mapDiv).append("svg");
+const width=mapDiv.clientWidth,height=mapDiv.clientHeight;
+
+projection=d3.geoNaturalEarth1();
+path=d3.geoPath().projection(projection);
+
+fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
 .then(r=>r.json())
 .then(world=>{
-features=topojson.feature(world,world.objects.countries).features;
-const width=960,height=520;
-const svg=d3.select('#map').append('svg')
-.attr('viewBox',`0 0 ${width} ${height}`)
-.attr('preserveAspectRatio','xMidYMid meet');
-const projection=d3.geoNaturalEarth1()
-.fitExtent([[8,8],[width-8,height-8]],{type:'FeatureCollection',features});
-const path=d3.geoPath(projection);
-svg.append('g').selectAll('path')
-.data(features).join('path')
-.attr('class','country')
-.attr('data-name',d=>d.properties.name)
-.attr('d',path)
-.append('title').text(d=>d.properties.name);
+const features=topojson.feature(world,world.objects.countries).features;
+projection.fitExtent([[10,10],[width-10,height-10]],{type:"FeatureCollection",features});
+svg.selectAll("path")
+.data(features)
+.enter()
+.append("path")
+.attr("class","country")
+.attr("d",path)
+.attr("data-country",d=>{
+const names={
+"004":"Afghanistan","008":"Albania","012":"Algeria","020":"Andorra","024":"Angola",
+"028":"Antigua and Barbuda","032":"Argentina","051":"Armenia","036":"Australia","040":"Austria","031":"Azerbaijan",
+"044":"Bahamas","048":"Bahrain","050":"Bangladesh","052":"Barbados","112":"Belarus","056":"Belgium","084":"Belize","204":"Benin","064":"Bhutan","068":"Bolivia","070":"Bosnia and Herzegovina","072":"Botswana","076":"Brazil","096":"Brunei","100":"Bulgaria","854":"Burkina Faso","108":"Burundi",
+"132":"Cabo Verde","116":"Cambodia","120":"Cameroon","124":"Canada","140":"Central African Republic","148":"Chad","152":"Chile","156":"China","170":"Colombia","174":"Comoros","178":"Congo","188":"Costa Rica","191":"Croatia","192":"Cuba","196":"Cyprus","203":"Czechia",
+"208":"Denmark","262":"Djibouti","212":"Dominica","214":"Dominican Republic",
+"218":"Ecuador","818":"Egypt","222":"El Salvador","226":"Equatorial Guinea","232":"Eritrea","233":"Estonia","748":"Eswatini","231":"Ethiopia",
+"242":"Fiji","246":"Finland","250":"France",
+"266":"Gabon","270":"Gambia","268":"Georgia","276":"Germany","288":"Ghana","300":"Greece","308":"Grenada","320":"Guatemala","324":"Guinea","624":"Guinea-Bissau","328":"Guyana",
+"332":"Haiti","340":"Honduras","348":"Hungary",
+" Iceland":"Iceland","352":"Iceland","356":"India","360":"Indonesia","364":"Iran","368":"Iraq","372":"Ireland","376":"Israel","380":"Italy",
+"388":"Jamaica","392":"Japan","400":"Jordan",
+"398":"Kazakhstan","404":"Kenya","296":"Kiribati","414":"Kuwait","417":"Kyrgyzstan",
+"418":"Laos","428":"Latvia","422":"Lebanon","426":"Lesotho","430":"Liberia","434":"Libya","438":"Liechtenstein","440":"Lithuania","442":"Luxembourg",
+"450":"Madagascar","454":"Malawi","458":"Malaysia","462":"Maldives","466":"Mali","470":"Malta","584":"Marshall Islands","478":"Mauritania","480":"Mauritius","484":"Mexico","583":"Micronesia","498":"Moldova","492":"Monaco","496":"Mongolia","499":"Montenegro","504":"Morocco","508":"Mozambique","104":"Myanmar",
+" Namibia":"Namibia","516":"Namibia","520":"Nauru","524":"Nepal","528":"Netherlands","554":"New Zealand"," Nicaragua":"Nicaragua","558":"Nicaragua","562":"Niger","566":"Nigeria","408":"North Korea","807":"North Macedonia","578":"Norway",
+"512":"Oman",
+"586":"Pakistan","585":"Palau","275":"Palestine","591":"Panama","598":"Papua New Guinea","600":"Paraguay","604":"Peru","608":"Philippines","616":"Poland","620":"Portugal",
+"634":"Qatar",
+"642":"Romania","643":"Russia","646":"Rwanda",
+"659":"Saint Kitts and Nevis","662":"Saint Lucia","670":"Saint Vincent and the Grenadines","882":"Samoa","674":"San Marino","678":"Sao Tome and Principe","682":"Saudi Arabia","686":"Senegal","688":"Serbia","690":"Seychelles","694":"Sierra Leone","702":"Singapore","703":"Slovakia","705":"Slovenia","090":"Solomon Islands","706":"Somalia","710":"South Africa","410":"South Korea","728":"South Sudan","724":"Spain","144":"Sri Lanka","729":"Sudan","740":"Suriname","752":"Sweden","756":"Switzerland","760":"Syria",
+"158":"Taiwan","762":"Tajikistan","834":"Tanzania","764":"Thailand","626":"Timor-Leste","768":"Togo","776":"Tonga","780":"Trinidad and Tobago","788":"Tunisia","792":"Turkey","795":"Turkmenistan","798":"Tuvalu",
+"800":"Uganda","804":"Ukraine","784":"United Arab Emirates","826":"United Kingdom","840":"United States","858":"Uruguay","860":"Uzbekistan",
+"548":"Vanuatu","336":"Vatican City","862":"Venezuela","704":"Vietnam",
+"887":"Yemen",
+" Zambia":"Zambia","894":"Zambia","716":"Zimbabwe"
+};
+return names[String(d.id).padStart(3,"0")]||"";
+})
+.on("click",function(event,d){
+const c=this.getAttribute("data-country");
+if(c&&!found.has(c)){
+input.value=aliases[c]?.[0]||c;
+checkAnswer();
+}
+});
 })
 .catch(()=>{
-document.getElementById('map').innerHTML='<p>تعذر تحميل الخريطة. تأكد من اتصال الإنترنت ثم أعد تحميل الصفحة.</p>';
+mapDiv.innerHTML="<p style='text-align:center;padding:30px'>تعذر تحميل الخريطة. تأكد من اتصال الإنترنت.</p>";
+});
+
+window.addEventListener("resize",()=>{
+if(!projection)return;
+const w=mapDiv.clientWidth,h=mapDiv.clientHeight;
+const features=svg.selectAll(".country").data();
+projection.fitExtent([[10,10],[w-10,h-10]],{type:"FeatureCollection",features});
+svg.selectAll(".country").attr("d",path);
 });
 </script>
 </body>
