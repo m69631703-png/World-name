@@ -1,21 +1,423 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تحدي دول العالم</title><style>
-*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#e5eaf3;font-family:system-ui,-apple-system,'Segoe UI',sans-serif}.wrap{max-width:1100px;margin:auto;padding:22px}.top{text-align:center}.top h1{margin:4px;font-size:28px}.muted{color:#9aa8bf}.stats{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px}.stat{background:#182338;border:1px solid #283751;border-radius:14px;padding:10px 20px}.stat b{font-size:24px}.game{background:#111c2e;border:1px solid #283751;border-radius:20px;padding:18px}.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:15px}input{background:#0b1220;color:white;border:1px solid #334762;border-radius:12px;padding:14px;font-size:18px;min-width:260px;text-align:center}button{border:0;border-radius:12px;padding:12px 18px;background:#60a5fa;color:#07111f;font-weight:bold;font-size:16px;cursor:pointer}button.secondary{background:#293951;color:#e4eaf3}button:hover{filter:brightness(1.1)}#map{width:100%;height:500px;background:#0b1525;border-radius:15px;overflow:hidden}svg{width:100%;height:100%}.country{fill:#263951;stroke:#0b1525;stroke-width:.6;cursor:default;transition:fill .2s}.country.found{fill:#45c49a}.country:hover{fill:#8bb7e8}.bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px}.list{background:#0b1525;border-radius:12px;padding:12px;max-height:140px;overflow:auto;flex:1;min-width:230px}.pill{display:inline-block;background:#193b38;color:#a5f3d0;margin:3px;padding:4px 8px;border-radius:9px}.message{min-height:26px;text-align:center;margin:8px;color:#b5c5d9}.timer{font-variant-numeric:tabular-nums}@media(max-width:600px){#map{height:360px}.wrap{padding:12px}.game{padding:10px}}
-</style></head><body><div class="wrap"><header class="top"><h1>🌍 تحدّي دول العالم</h1><p class="muted">اكتب أسماء الدول بالعربية من ذاكرتك — كل دولة صحيحة تُلوّن على الخريطة</p></header><div class="stats"><div class="stat">الدول <b id="count">0</b> / 195</div><div class="stat">الوقت <b class="timer" id="timer">15:00</b></div><div class="stat">النسبة <b id="pct">0%</b></div></div><section class="game"><div class="controls"><input id="answer" placeholder="اكتب اسم دولة..." autocomplete="off"><button id="start">ابدأ</button><button class="secondary" id="reset">إعادة</button><button class="secondary" id="reveal">عرض الإجابات</button></div><div class="message" id="msg">اضغط ابدأ لبدء تحدي الـ 15 دقيقة.</div><div id="map"><div style="padding:40px;text-align:center;color:#9aa8bf">تحميل خريطة العالم...</div></div><div class="bottom"><div class="list"><b>الدول التي وجدتها</b><div id="found"></div></div><div class="list"><b>ملاحظات</b><p class="muted">تقبل بعض المرادفات. لا تحتاج همزة أو تشكيل. اللعبة تستهدف 195 دولة.</p></div></div></section></div>
-<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script><script>
-const aliases = {"Afghanistan": ["أفغانستان"], "Albania": ["ألبانيا", "البانيا"], "Algeria": ["الجزائر"], "Andorra": ["أندورا", "اندورا"], "Angola": ["أنغولا", "انغولا"], "Antigua and Barbuda": ["أنتيغوا وبربودا", "انتيغوا وبربودا"], "Argentina": ["الأرجنتين", "ارجنتين"], "Armenia": ["أرمينيا", "ارمينيا"], "Australia": ["أستراليا", "استراليا"], "Austria": ["النمسا"], "Azerbaijan": ["أذربيجان", "اذربيجان"], "Bahamas": ["باهاماس"], "Bahrain": ["البحرين"], "Bangladesh": ["بنغلاديش", "بنگلاديش"], "Barbados": ["باربادوس"], "Belarus": ["بيلاروس", "روسيا البيضاء"], "Belgium": ["بلجيكا"], "Belize": ["بليز"], "Benin": ["بنين"], "Bhutan": ["بوتان"], "Bolivia": ["بوليفيا"], "Bosnia and Herzegovina": ["البوسنة والهرسك"], "Botswana": ["بوتسوانا"], "Brazil": ["البرازيل"], "Brunei": ["بروناي"], "Bulgaria": ["بلغاريا"], "Burkina Faso": ["بوركينا فاسو"], "Burundi": ["بوروندي"], "Cambodia": ["كمبوديا"], "Cameroon": ["الكاميرون"], "Canada": ["كندا"], "Cape Verde": ["الرأس الأخضر"], "Central African Republic": ["جمهورية أفريقيا الوسطى", "افريقيا الوسطى"], "Chad": ["تشاد"], "Chile": ["تشيلي"], "China": ["الصين"], "Colombia": ["كولومبيا"], "Comoros": ["جزر القمر"], "Republic of the Congo": ["الكونغو"], "Democratic Republic of the Congo": ["الكونغو الديمقراطية", "جمهورية الكونغو الديمقراطية"], "Costa Rica": ["كوستاريكا"], "Croatia": ["كرواتيا"], "Cuba": ["كوبا"], "Cyprus": ["قبرص"], "Czechia": ["التشيك"], "Denmark": ["الدنمارك"], "Djibouti": ["جيبوتي"], "Dominica": ["دومينيكا"], "Dominican Republic": ["جمهورية الدومينيكان"], "Ecuador": ["الإكوادور", "اكوادور"], "Egypt": ["مصر"], "El Salvador": ["السلفادور"], "Equatorial Guinea": ["غينيا الاستوائية"], "Eritrea": ["إريتريا", "اريتريا"], "Estonia": ["إستونيا", "استونيا"], "Eswatini": ["إسواتيني", "سواتيني"], "Ethiopia": ["إثيوبيا", "اثيوبيا"], "Fiji": ["فيجي"], "Finland": ["فنلندا"], "France": ["فرنسا"], "Gabon": ["الغابون"], "Gambia": ["غامبيا"], "Georgia": ["جورجيا"], "Germany": ["ألمانيا", "المانيا"], "Ghana": ["غانا"], "Greece": ["اليونان"], "Grenada": ["غرينادا"], "Guatemala": ["غواتيمالا"], "Guinea": ["غينيا"], "Guinea-Bissau": ["غينيا بيساو"], "Guyana": ["غيانا"], "Haiti": ["هايتي"], "Honduras": ["هندوراس"], "Hungary": ["المجر"], "Iceland": ["آيسلندا", "ايسلندا"], "India": ["الهند"], "Indonesia": ["إندونيسيا", "اندونيسيا"], "Iran": ["إيران", "ايران"], "Iraq": ["العراق"], "Ireland": ["أيرلندا", "ايرلندا"], "Israel": ["إسرائيل", "اسرائيل"], "Italy": ["إيطاليا", "ايطاليا"], "Jamaica": ["جامايكا"], "Japan": ["اليابان"], "Jordan": ["الأردن", "الاردن"], "Kazakhstan": ["كازاخستان"], "Kenya": ["كينيا"], "Kiribati": ["كيريباتي"], "Kuwait": ["الكويت"], "Kyrgyzstan": ["قرغيزستان", "قيرغيزستان"], "Laos": ["لاوس"], "Latvia": ["لاتفيا"], "Lebanon": ["لبنان"], "Lesotho": ["ليسوتو"], "Liberia": ["ليبيريا"], "Libya": ["ليبيا"], "Liechtenstein": ["ليختنشتاين"], "Lithuania": ["ليتوانيا"], "Luxembourg": ["لوكسمبورغ"], "Madagascar": ["مدغشقر"], "Malawi": ["مالاوي"], "Malaysia": ["ماليزيا"], "Maldives": ["المالديف"], "Mali": ["مالي"], "Malta": ["مالطا"], "Marshall Islands": ["جزر مارشال"], "Mauritania": ["موريتانيا"], "Mauritius": ["موريشيوس"], "Mexico": ["المكسيك"], "Micronesia": ["ميكرونيزيا"], "Moldova": ["مولدوفا"], "Monaco": ["موناكو"], "Mongolia": ["منغوليا"], "Montenegro": ["الجبل الأسود"], "Morocco": ["المغرب"], "Mozambique": ["موزمبيق"], "Myanmar": ["ميانمار", "بورما"], "Namibia": ["ناميبيا"], "Nauru": ["ناورو"], "Nepal": ["نيبال"], "Netherlands": ["هولندا"], "New Zealand": ["نيوزيلندا"], "Nicaragua": ["نيكاراغوا"], "Niger": ["النيجر"], "Nigeria": ["نيجيريا"], "North Korea": ["كوريا الشمالية"], "North Macedonia": ["مقدونيا الشمالية"], "Norway": ["النرويج"], "Oman": ["عمان"], "Pakistan": ["باكستان"], "Palau": ["بالاو"], "Palestine": ["فلسطين"], "Panama": ["بنما"], "Papua New Guinea": ["بابوا غينيا الجديدة"], "Paraguay": ["باراغواي"], "Peru": ["بيرو"], "Philippines": ["الفلبين"], "Poland": ["بولندا"], "Portugal": ["البرتغال"], "Qatar": ["قطر"], "Romania": ["رومانيا"], "Russia": ["روسيا"], "Rwanda": ["رواندا"], "Saint Kitts and Nevis": ["سانت كيتس ونيفيس"], "Saint Lucia": ["سانت لوسيا"], "Saint Vincent and the Grenadines": ["سانت فنسنت والغرينادين"], "Samoa": ["ساموا"], "San Marino": ["سان مارينو"], "Sao Tome and Principe": ["ساو تومي وبرينسيب"], "Saudi Arabia": ["السعودية", "المملكة العربية السعودية"], "Senegal": ["السنغال"], "Serbia": ["صربيا"], "Seychelles": ["سيشل"], "Sierra Leone": ["سيراليون"], "Singapore": ["سنغافورة"], "Slovakia": ["سلوفاكيا"], "Slovenia": ["سلوفينيا"], "Solomon Islands": ["جزر سليمان"], "Somalia": ["الصومال"], "South Africa": ["جنوب أفريقيا", "جنوب افريقيا"], "South Korea": ["كوريا الجنوبية"], "South Sudan": ["جنوب السودان"], "Spain": ["إسبانيا", "اسبانيا"], "Sri Lanka": ["سريلانكا"], "Sudan": ["السودان"], "Suriname": ["سورينام"], "Sweden": ["السويد"], "Switzerland": ["سويسرا"], "Syria": ["سوريا"], "Tajikistan": ["طاجيكستان"], "Tanzania": ["تنزانيا"], "Thailand": ["تايلاند"], "Timor-Leste": ["تيمور الشرقية"], "Togo": ["توغو"], "Tonga": ["تونغا"], "Trinidad and Tobago": ["ترينيداد وتوباغو"], "Tunisia": ["تونس"], "Turkey": ["تركيا"], "Turkmenistan": ["تركمانستان"], "Tuvalu": ["توفالو"], "Uganda": ["أوغندا", "اوغندا"], "Ukraine": ["أوكرانيا", "اوكرانيا"], "United Arab Emirates": ["الإمارات", "الامارات", "الإمارات العربية المتحدة"], "United Kingdom": ["المملكة المتحدة", "بريطانيا"], "United States": ["الولايات المتحدة", "أمريكا", "الولايات المتحدة الأمريكية"], "Uruguay": ["أوروغواي", "اورغواي"], "Uzbekistan": ["أوزبكستان", "اوزبكستان"], "Vanuatu": ["فانواتو"], "Vatican": ["الفاتيكان"], "Venezuela": ["فنزويلا"], "Vietnam": ["فيتنام"], "Yemen": ["اليمن"], "Zambia": ["زامبيا"], "Zimbabwe": ["زيمبابوي"]};
-const normalize=s=>s.toLowerCase().trim().replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[‏‎]/g,'').replace(/\s+/g,' ');
-const aliasMap={};Object.entries(aliases).forEach(([english,arr])=>arr.forEach(a=>aliasMap[normalize(a)]=english));
-let found=new Set(),running=false,remaining=900,interval=null,paths={};
-const input=document.getElementById('answer'),msg=document.getElementById('msg');
-function update(){document.getElementById('count').textContent=found.size;document.getElementById('pct').textContent=Math.round(found.size/195*100)+'%';document.getElementById('found').innerHTML=[...found].map(x=>'<span class="pill">'+aliases[x][0]+'</span>').join('');}
-function clock(){let m=Math.floor(remaining/60),s=remaining%60;document.getElementById('timer').textContent=m+':'+String(s).padStart(2,'0');}
-function start(){if(running)return;running=true;msg.textContent='ابدأ الكتابة!';input.focus();interval=setInterval(()=>{remaining--;clock();if(remaining<=0){stop();msg.textContent='انتهى الوقت! نتيجتك '+found.size+' من 195.';}},1000);}
-function stop(){running=false;clearInterval(interval);}
-function submit(){let value=normalize(input.value);if(!value)return;let key=aliasMap[value];if(key&& !found.has(key)){found.add(key);let p=paths[key];if(p)p.classList.add('found');msg.textContent='ممتاز! '+aliases[key][0];input.value='';update();if(found.size>=195){stop();msg.textContent='🎉 أتممت جميع الدول!';}}else if(key&&found.has(key)){msg.textContent='هذه الدولة محسوبة مسبقًا.';}else{msg.textContent='لم أتعرف على الاسم — جرّب اسمًا آخر أو تهجئة مختلفة.';}}
-input.addEventListener('keydown',e=>{if(e.key==='Enter')submit()});document.getElementById('start').onclick=start;document.getElementById('reset').onclick=()=>{stop();found.clear();remaining=900;clock();update();Object.values(paths).forEach(p=>p.classList.remove('found'));input.value='';msg.textContent='اضغط ابدأ لبدء تحدي الـ 15 دقيقة.';};document.getElementById('reveal').onclick=()=>{stop();msg.textContent='الإجابات: '+Object.keys(aliases).map(k=>aliases[k][0]).join('، ');};
-// Map names in Natural Earth/world-atlas IDs differ. Join on country name via map label, then translate aliases mapping with English equivalents.
-const mapNames={"Afghanistan":"Afghanistan","Albania":"Albania","Algeria":"Algeria","Andorra":"Andorra","Angola":"Angola","Antigua and Barbuda":"Antigua and Barbuda","Argentina":"Argentina","Armenia":"Armenia","Australia":"Australia","Austria":"Austria","Azerbaijan":"Azerbaijan","Bahamas":"Bahamas","Bahrain":"Bahrain","Bangladesh":"Bangladesh","Barbados":"Barbados","Belarus":"Belarus","Belgium":"Belgium","Belize":"Belize","Benin":"Benin","Bhutan":"Bhutan","Bolivia":"Bolivia","Bosnia and Herzegovina":"Bosnia and Herzegovina","Botswana":"Botswana","Brazil":"Brazil","Brunei":"Brunei","Bulgaria":"Bulgaria","Burkina Faso":"Burkina Faso","Burundi":"Burundi","Cambodia":"Cambodia","Cameroon":"Cameroon","Canada":"Canada","Cape Verde":"Cape Verde","Central African Republic":"Central African Republic","Chad":"Chad","Chile":"Chile","China":"China","Colombia":"Colombia","Comoros":"Comoros","Republic of the Congo":"Republic of the Congo","Democratic Republic of the Congo":"Democratic Republic of the Congo","Costa Rica":"Costa Rica","Croatia":"Croatia","Cuba":"Cuba","Cyprus":"Cyprus","Czechia":"Czechia","Denmark":"Denmark","Djibouti":"Djibouti","Dominica":"Dominica","Dominican Republic":"Dominican Republic","Ecuador":"Ecuador","Egypt":"Egypt","El Salvador":"El Salvador","Equatorial Guinea":"Equatorial Guinea","Eritrea":"Eritrea","Estonia":"Estonia","Eswatini":"Eswatini","Ethiopia":"Ethiopia","Fiji":"Fiji","Finland":"Finland","France":"France","Gabon":"Gabon","Gambia":"Gambia","Georgia":"Georgia","Germany":"Germany","Ghana":"Ghana","Greece":"Greece","Grenada":"Grenada","Guatemala":"Guatemala","Guinea":"Guinea","Guinea-Bissau":"Guinea-Bissau","Guyana":"Guyana","Haiti":"Haiti","Honduras":"Honduras","Hungary":"Hungary","Iceland":"Iceland","India":"India","Indonesia":"Indonesia","Iran":"Iran","Iraq":"Iraq","Ireland":"Ireland","Israel":"Israel","Italy":"Italy","Jamaica":"Jamaica","Japan":"Japan","Jordan":"Jordan","Kazakhstan":"Kazakhstan","Kenya":"Kenya","Kiribati":"Kiribati","Kuwait":"Kuwait","Kyrgyzstan":"Kyrgyzstan","Laos":"Laos","Latvia":"Latvia","Lebanon":"Lebanon","Lesotho":"Lesotho","Liberia":"Liberia","Libya":"Libya","Liechtenstein":"Liechtenstein","Lithuania":"Lithuania","Luxembourg":"Luxembourg","Madagascar":"Madagascar","Malawi":"Malawi","Malaysia":"Malaysia","Maldives":"Maldives","Mali":"Mali","Malta":"Malta","Marshall Islands":"Marshall Islands","Mauritania":"Mauritania","Mauritius":"Mauritius","Mexico":"Mexico","Micronesia":"Micronesia","Moldova":"Moldova","Monaco":"Monaco","Mongolia":"Mongolia","Montenegro":"Montenegro","Morocco":"Morocco","Mozambique":"Mozambique","Namibia":"Namibia","Nauru":"Nauru","Nepal":"Nepal","Netherlands":"Netherlands","New Zealand":"New Zealand","Nicaragua":"Nicaragua","Niger":"Niger","Nigeria":"Nigeria","North Korea":"North Korea","North Macedonia":"North Macedonia","Norway":"Norway","Oman":"Oman","Pakistan":"Pakistan","Palau":"Palau","Palestine":"Palestine","Panama":"Panama","Papua New Guinea":"Papua New Guinea","Paraguay":"Paraguay","Peru":"Peru","Philippines":"Philippines","Poland":"Poland","Portugal":"Portugal","Qatar":"Qatar","Romania":"Romania","Russia":"Russia","Rwanda":"Rwanda","Saint Kitts and Nevis":"Saint Kitts and Nevis","Saint Lucia":"Saint Lucia","Saint Vincent and the Grenadines":"Saint Vincent and the Grenadines","Samoa":"Samoa","San Marino":"San Marino","Sao Tome and Principe":"Sao Tome and Principe","Saudi Arabia":"Saudi Arabia","Senegal":"Senegal","Serbia":"Serbia","Seychelles":"Seychelles","Sierra Leone":"Sierra Leone","Singapore":"Singapore","Slovakia":"Slovakia","Slovenia":"Slovenia","Solomon Islands":"Solomon Islands","Somalia":"Somalia","South Africa":"South Africa","South Korea":"South Korea","South Sudan":"South Sudan","Spain":"Spain","Sri Lanka":"Sri Lanka","Sudan":"Sudan","Suriname":"Suriname","Sweden":"Sweden","Switzerland":"Switzerland","Syria":"Syria","Tajikistan":"Tajikistan","Tanzania":"Tanzania","Thailand":"Thailand","Timor-Leste":"Timor-Leste","Togo":"Togo","Tonga":"Tonga","Trinidad and Tobago":"Trinidad and Tobago","Tunisia":"Tunisia","Turkey":"Turkey","Turkmenistan":"Turkmenistan","Tuvalu":"Tuvalu","Uganda":"Uganda","Ukraine":"Ukraine","United Arab Emirates":"United Arab Emirates","United Kingdom":"United Kingdom","United States":"United States","Uruguay":"Uruguay","Uzbekistan":"Uzbekistan","Vanuatu":"Vanuatu","Vatican":"Vatican","Venezuela":"Venezuela","Vietnam":"Vietnam","Yemen":"Yemen","Zambia":"Zambia","Zimbabwe":"Zimbabwe"};
-// Use country feature names from the world-atlas dataset, allowing aliases to match the keys used in our answer dictionary.
-fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r=>r.json()).then(topology=>{const geo=topojson.feature(topology,topology.objects.countries).features;const svgNS='http://www.w3.org/2000/svg';const svg=document.createElementNS(svgNS,'svg');svg.setAttribute('viewBox','0 0 960 500');svg.setAttribute('preserveAspectRatio','xMidYMid meet');const projection=(lon,lat)=>{let x=(lon+180)*960/360;let y=(90-lat)*500/180;return [x,y];};geo.forEach(f=>{let name=f.properties.name;let answerKey=Object.keys(aliases).find(k=>k===name);if(!answerKey)return;let path=document.createElementNS(svgNS,'path');path.setAttribute('class','country');path.setAttribute('data-name',name);path.setAttribute('d',geometryPath(f));svg.appendChild(path);paths[answerKey]=path;});document.getElementById('map').innerHTML='';document.getElementById('map').appendChild(svg);}).catch(()=>document.getElementById('map').innerHTML='<p style="padding:30px">تعذّر تحميل الخريطة. تأكد من اتصال الإنترنت.</p>');
-function geometryPath(feature){const polys=feature.geometry.type==='Polygon'?[feature.geometry.coordinates]:feature.geometry.coordinates;let d='';polys.forEach(poly=>poly.forEach(ring=>{ring.forEach((pt,i)=>{let [x,y]=proj(pt);d+=(i?'L':'M')+x+' '+y;});d+='Z';}));return d;}function proj(pt){let lon=pt[0],lat=pt[1];lat=Math.max(-80,Math.min(85,lat));let x=(lon+180)*960/360,y=(85-lat)*960/360;return [x,y];}
-</script></body></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تحدي دول العالم</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1120;color:#e5eaf4;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;padding:18px}
+.wrap{max-width:900px;margin:auto}
+h1{text-align:center;font-size:clamp(25px,5vw,36px);margin:12px 0}
+p{text-align:center;color:#aebbd0;font-size:18px}
+.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0}
+.stat{background:#192338;border:1px solid #2c3a56;border-radius:20px;padding:16px 22px;font-size:20px}
+.stat b{font-size:26px}
+.panel{background:#141e31;border:1px solid #2c3a56;border-radius:25px;padding:18px}
+.inputs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.inputs input{flex:1;min-width:220px;background:#0b1120;color:#fff;border:2px solid #34435f;border-radius:20px;padding:16px;font-size:20px;text-align:center}
+.btn{border:0;border-radius:18px;padding:16px 24px;font-size:20px;font-weight:700;background:#72a5f4;color:#071225;cursor:pointer}
+.btn.secondary{background:#2a3852;color:#eef4ff}
+.hint{text-align:center;margin:18px;color:#aebbd0}
+.mapbox{background:#0b1120;border-radius:22px;overflow:hidden;margin-top:20px;min-height:300px;position:relative}
+.mapbox svg{width:100%;height:auto;display:block;overflow:hidden}
+.country{fill:#293953;stroke:#172238;stroke-width:.6;transition:fill .2s}
+.country.found{fill:#72a5f4}
+.country:hover{fill:#496789}
+.list{margin-top:16px;background:#0b1120;border-radius:18px;padding:14px;max-height:200px;overflow:auto;color:#d7e2f3}
+.list h3{margin:0 0 10px}
+.listitems{display:flex;gap:7px;flex-wrap:wrap}
+.pill{background:#1c2940;padding:6px 10px;border-radius:12px;font-size:14px}
+.msg{text-align:center;min-height:26px;color:#9bc2ff;margin:10px}
+.suggest{background:#23334d;padding:12px;border-radius:14px;text-align:center;display:none;margin:8px 0}
+.suggest button{margin:8px}
+.foot{text-align:center;color:#78869d;font-size:13px;margin:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🌍 تحدّي دول العالم</h1>
+<p>اكتب أسماء الدول بالعربية من ذاكرتك — كل دولة صحيحة تُلوّن على الخريطة</p>
+
+<div class="stats">
+<div class="stat">الدول <b id="count">0</b> / <b id="total">195</b></div>
+<div class="stat">الوقت <b id="timer">15:00</b></div>
+<div class="stat">النسبة <b id="pct">0%</b></div>
+</div>
+
+<div class="panel">
+<div class="inputs">
+<input id="answer" autocomplete="off" placeholder="اكتب اسم دولة..." aria-label="اسم الدولة">
+<button class="btn" id="start">ابدأ</button>
+</div>
+
+<div class="suggest" id="suggest"></div>
+
+<div class="inputs" style="margin-top:12px">
+<button class="btn secondary" id="show">عرض الإجابات</button>
+<button class="btn secondary" id="reset">إعادة</button>
+</div>
+
+<div class="msg" id="msg"></div>
+<div class="hint" id="hint">اضغط ابدأ لبدء تحدي الـ 15 دقيقة.</div>
+<div class="mapbox" id="map"></div>
+
+<div class="list">
+<h3>الدول المكتشفة</h3>
+<div class="listitems" id="listitems">—</div>
+</div>
+</div>
+<div class="foot">قد يتطلب تحميل الخريطة اتصالاً بالإنترنت.</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<script>
+const aliases={
+"Afghanistan":["أفغانستان","افغانستان"],
+"Albania":["ألبانيا"],
+"Algeria":["الجزائر"],
+"Andorra":["أندورا"],
+"Angola":["أنغولا"],
+"Antigua and Barbuda":["أنتيغوا وبربودا","انتيغوا وبربودا"],
+"Argentina":["الأرجنتين","ارجنتين"],
+"Armenia":["أرمينيا"],
+"Australia":["أستراليا","استراليا"],
+"Austria":["النمسا"],
+"Azerbaijan":["أذربيجان"],
+"Bahamas":["الباهاما"],
+"Bahrain":["البحرين"],
+"Bangladesh":["بنغلاديش"],
+"Barbados":["باربادوس"],
+"Belarus":["بيلاروس","روسيا البيضاء"],
+"Belgium":["بلجيكا"],
+"Belize":["بليز"],
+"Benin":["بنين"],
+"Bhutan":["بوتان"],
+"Bolivia":["بوليفيا"],
+"Bosnia and Herzegovina":["البوسنة","البوسنة والهرسك","البوسنه","البوسنه والهرسك"],
+"Botswana":["بوتسوانا"],
+"Brazil":["البرازيل"],
+"Brunei":["بروناي"],
+"Bulgaria":["بلغاريا"],
+"Burkina Faso":["بوركينا فاسو"],
+"Burundi":["بوروندي"],
+"Cambodia":["كمبوديا"],
+"Cameroon":["الكاميرون"],
+"Canada":["كندا"],
+"Cape Verde":["الرأس الأخضر","كاب فيردي"],
+"Central African Republic":["جمهورية أفريقيا الوسطى","افريقيا الوسطى"],
+"Chad":["تشاد"],
+"Chile":["تشيلي"],
+"China":["الصين"],
+"Colombia":["كولومبيا"],
+"Comoros":["جزر القمر"],
+"Republic of the Congo":["الكونغو","كونغو"],
+"Democratic Republic of the Congo":["الكونغو الديمقراطية","جمهورية الكونغو الديمقراطية"],
+"Costa Rica":["كوستاريكا"],
+"Croatia":["كرواتيا"],
+"Cuba":["كوبا"],
+"Cyprus":["قبرص"],
+"Czechia":["التشيك","جمهورية التشيك"],
+"Denmark":["الدنمارك"],
+"Djibouti":["جيبوتي"],
+"Dominica":["دومينيكا"],
+"Dominican Republic":["جمهورية الدومينيكان","الدومينيكان"],
+"Ecuador":["الإكوادور"],
+"Egypt":["مصر"],
+"El Salvador":["السلفادور"],
+"Equatorial Guinea":["غينيا الاستوائية"],
+"Eritrea":["إريتريا"],
+"Estonia":["إستونيا"],
+"Eswatini":["إسواتيني","سوازيلاند"],
+"Ethiopia":["إثيوبيا"],
+"Fiji":["فيجي"],
+"Finland":["فنلندا"],
+"France":["فرنسا"],
+"Gabon":["الغابون"],
+"Gambia":["غامبيا"],
+"Georgia":["جورجيا"],
+"Germany":["ألمانيا"],
+"Ghana":["غانا"],
+"Greece":["اليونان"],
+"Grenada":["غرينادا"],
+"Guatemala":["غواتيمالا"],
+"Guinea":["غينيا"],
+"Guinea-Bissau":["غينيا بيساو"],
+"Guyana":["غيانا"],
+"Haiti":["هايتي"],
+"Honduras":["هندوراس"],
+"Hungary":["المجر","هنغاريا"],
+"Iceland":["آيسلندا"],
+"India":["الهند"],
+"Indonesia":["إندونيسيا"],
+"Iran":["إيران"],
+"Iraq":["العراق"],
+"Ireland":["أيرلندا"],
+"Israel":["إسرائيل"],
+"Italy":["إيطاليا"],
+"Jamaica":["جامايكا"],
+"Japan":["اليابان"],
+"Jordan":["الأردن"],
+"Kazakhstan":["كازاخستان"],
+"Kenya":["كينيا"],
+"Kiribati":["كيريباتي"],
+"Kuwait":["الكويت"],
+"Kyrgyzstan":["قيرغيزستان"],
+"Laos":["لاوس"],
+"Latvia":["لاتفيا"],
+"Lebanon":["لبنان"],
+"Lesotho":["ليسوتو"],
+"Liberia":["ليبيريا"],
+"Libya":["ليبيا"],
+"Liechtenstein":["ليختنشتاين"],
+"Lithuania":["ليتوانيا"],
+"Luxembourg":["لوكسمبورغ"],
+"Madagascar":["مدغشقر"],
+"Malawi":["مالاوي"],
+"Malaysia":["ماليزيا"],
+"Maldives":["المالديف"],
+"Mali":["مالي"],
+"Malta":["مالطا"],
+"Marshall Islands":["جزر مارشال"],
+"Mauritania":["موريتانيا"],
+"Mauritius":["موريشيوس"],
+"Mexico":["المكسيك"],
+"Micronesia":["ميكرونيزيا"],
+"Moldova":["مولدوفا"],
+"Monaco":["موناكو"],
+"Mongolia":["منغوليا"],
+"Montenegro":["الجبل الأسود"],
+"Morocco":["المغرب"],
+"Mozambique":["موزمبيق"],
+"Myanmar":["ميانمار","بورما"],
+"Namibia":["ناميبيا"],
+"Nauru":["ناورو"],
+"Nepal":["نيبال"],
+"Netherlands":["هولندا"],
+"New Zealand":["نيوزيلندا"],
+"Nicaragua":["نيكاراغوا"],
+"Niger":["النيجر"],
+"Nigeria":["نيجيريا"],
+"North Korea":["كوريا الشمالية"],
+"North Macedonia":["مقدونيا الشمالية"],
+"Norway":["النرويج"],
+"Oman":["عمان","سلطنة عمان"],
+"Pakistan":["باكستان"],
+"Palau":["بالاو"],
+"Palestine":["فلسطين"],
+"Panama":["بنما"],
+"Papua New Guinea":["بابوا غينيا الجديدة"],
+"Paraguay":["باراغواي"],
+"Peru":["بيرو"],
+"Philippines":["الفلبين"],
+"Poland":["بولندا"],
+"Portugal":["البرتغال"],
+"Qatar":["قطر"],
+"Romania":["رومانيا"],
+"Russia":["روسيا"],
+"Rwanda":["رواندا"],
+"Saint Kitts and Nevis":["سانت كيتس ونيفيس"],
+"Saint Lucia":["سانت لوسيا"],
+"Saint Vincent and the Grenadines":["سانت فنسنت والغرينادين"],
+"Samoa":["ساموا"],
+"San Marino":["سان مارينو"],
+"Sao Tome and Principe":["ساو تومي وبرينسيبي"],
+"Saudi Arabia":["السعودية","المملكة العربية السعودية"],
+"Senegal":["السنغال"],
+"Serbia":["صربيا"],
+"Seychelles":["سيشل"],
+"Sierra Leone":["سيراليون"],
+"Singapore":["سنغافورة"],
+"Slovakia":["سلوفاكيا"],
+"Slovenia":["سلوفينيا"],
+"Solomon Islands":["جزر سليمان"],
+"Somalia":["الصومال"],
+"South Africa":["جنوب أفريقيا"],
+"South Korea":["كوريا الجنوبية"],
+"South Sudan":["جنوب السودان"],
+"Spain":["إسبانيا"],
+"Sri Lanka":["سريلانكا"],
+"Sudan":["السودان"],
+"Suriname":["سورينام"],
+"Sweden":["السويد"],
+"Switzerland":["سويسرا"],
+"Syria":["سوريا","سورية"],
+"Taiwan":["تايوان"],
+"Tajikistan":["طاجيكستان"],
+"Tanzania":["تنزانيا"],
+"Thailand":["تايلاند"],
+"Timor-Leste":["تيمور الشرقية"],
+"Togo":["توغو"],
+"Tonga":["تونغا"],
+"Trinidad and Tobago":["ترينيداد وتوباغو"],
+"Tunisia":["تونس"],
+"Turkey":["تركيا"],
+"Turkmenistan":["تركمانستان"],
+"Tuvalu":["توفالو"],
+"Uganda":["أوغندا"],
+"Ukraine":["أوكرانيا"],
+"United Arab Emirates":["الإمارات","الإمارات العربية المتحدة"],
+"United Kingdom":["بريطانيا","المملكة المتحدة","انجلترا","إنجلترا"],
+"United States of America":["أمريكا","الولايات المتحدة","الولايات المتحدة الأمريكية"],
+"Uruguay":["أوروغواي"],
+"Uzbekistan":["أوزبكستان"],
+"Vanuatu":["فانواتو"],
+"Vatican":["الفاتيكان"],
+"Venezuela":["فنزويلا"],
+"Vietnam":["فيتنام"],
+"Yemen":["اليمن"],
+"Zambia":["زامبيا"],
+"Zimbabwe":["زيمبابوي"]
+};
+
+const mapNames={
+"Czechia":"Czech Republic",
+"Democratic Republic of the Congo":"Dem. Rep. Congo",
+"Republic of the Congo":"Congo",
+"South Sudan":"South Sudan",
+"North Korea":"North Korea",
+"South Korea":"South Korea",
+"Eswatini":"eSwatini",
+"United States of America":"United States of America",
+"Vatican":"Vatican",
+"Palestine":"Palestine",
+"Taiwan":"Taiwan"
+};
+
+const norm=s=>s.toLowerCase().trim()
+.replace(/[أإآ]/g,"ا")
+.replace(/ى/g,"ي")
+.replace(/[ًٌٍَُِّْ]/g,"")
+.replace(/[ـ]/g,"")
+.replace(/\s+/g," ");
+
+let aliasMap={},found=new Set(),running=false,remaining=900,timerInt=null,features=[];
+for(const [k,arr] of Object.entries(aliases)){
+aliasMap[norm(k)]=k;
+arr.forEach(a=>aliasMap[norm(a)]=k);
+}
+
+const input=document.getElementById('answer');
+const msg=document.getElementById('msg');
+const suggest=document.getElementById('suggest');
+
+function update(){
+document.getElementById('count').textContent=found.size;
+document.getElementById('pct').textContent=Math.round(found.size/195*100)+'%';
+document.getElementById('listitems').innerHTML=found.size?[...found].map(x=>`<span class="pill">${aliases[x]?.[0]||x}</span>`).join(''):'—';
+}
+
+function clock(){
+let m=Math.floor(remaining/60),s=remaining%60;
+document.getElementById('timer').textContent=`${m}:${String(s).padStart(2,'0')}`;
+if(remaining<=0){stop();msg.textContent='انتهى الوقت!';showAnswers()}
+}
+
+function start(){
+if(running)return;
+running=true;
+document.getElementById('hint').textContent='اكتب أسماء الدول، واضغط Enter لإرسال الإجابة.';
+timerInt=setInterval(()=>{remaining--;clock()},1000);
+input.focus();
+}
+
+function stop(){
+running=false;
+clearInterval(timerInt);
+}
+
+function reset(){
+stop();
+remaining=900;
+found.clear();
+clock();
+update();
+input.value='';
+msg.textContent='';
+suggest.style.display='none';
+document.querySelectorAll('.country.found').forEach(p=>p.classList.remove('found'));
+document.getElementById('hint').textContent='اضغط ابدأ لبدء تحدي الـ 15 دقيقة.';
+}
+
+function submit(){
+if(!running)start();
+let v=norm(input.value);
+if(!v)return;
+let key=aliasMap[v];
+
+if(key&&!found.has(key)){
+found.add(key);
+let featureName=mapNames[key]||key;
+let p=document.querySelector(`[data-name="${CSS.escape(featureName)}"]`);
+if(!p)p=document.querySelector(`[data-name="${CSS.escape(key)}"]`);
+if(p)p.classList.add('found');
+msg.textContent='صحيح! 🎉';
+msg.style.color='#9bc2ff';
+input.value='';
+suggest.style.display='none';
+update();
+if(found.size>=195){stop();msg.textContent='مذهل! أكملت جميع الدول!'}
+}
+else if(key&&found.has(key)){
+msg.textContent='هذه الدولة سبق أن كتبتها.';
+suggest.style.display='none';
+}
+else{
+let candidate=Object.keys(aliasMap).find(a=>a.length>2&&(a.includes(v)||v.includes(a)));
+if(candidate){
+let c=aliasMap[candidate];
+suggest.innerHTML=`هل تقصد <b>${aliases[c]?.[0]||c}</b>؟ <button class="btn" id="yes">نعم</button> <button class="btn secondary" id="no">لا</button>`;
+suggest.style.display='block';
+document.getElementById('yes').onclick=()=>{input.value=aliases[c]?.[0]||c;submit()};
+document.getElementById('no').onclick=()=>{suggest.style.display='none';msg.textContent='حاول مرة أخرى.'};
+}
+else{
+msg.textContent='لم أتعرف على الدولة، حاول كتابة الاسم بشكل مختلف.';
+suggest.style.display='none';
+}
+}
+input.focus();
+}
+
+function showAnswers(){
+stop();
+msg.textContent='الدول التي لم تكتشفها تظهر بأسمائها هنا:';
+document.getElementById('listitems').innerHTML=Object.keys(aliases).map(k=>`<span class="pill" style="opacity:${found.has(k)?'.5':'1'}">${aliases[k][0]}${found.has(k)?' ✓':''}</span>`).join('');
+}
+
+document.getElementById('start').onclick=start;
+document.getElementById('reset').onclick=reset;
+document.getElementById('show').onclick=showAnswers;
+input.addEventListener('keydown',e=>{if(e.key==='Enter')submit()});
+clock();
+update();
+
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+.then(r=>r.json())
+.then(world=>{
+features=topojson.feature(world,world.objects.countries).features;
+const width=960,height=520;
+const svg=d3.select('#map').append('svg')
+.attr('viewBox',`0 0 ${width} ${height}`)
+.attr('preserveAspectRatio','xMidYMid meet');
+
+const projection=d3.geoNaturalEarth1()
+.fitExtent([[8,8],[width-8,height-8]],{type:'FeatureCollection',features});
+
+const path=d3.geoPath(projection);
+
+svg.append('g').selectAll('path')
+.data(features).join('path')
+.attr('class','country')
+.attr('data-name',d=>d.properties.name)
+.attr('d',path)
+.append('title').text(d=>d.properties.name);
+})
+.catch(()=>{
+document.getElementById('map').innerHTML='<p>تعذر تحميل الخريطة. تأكد من اتصال الإنترنت ثم أعد تحميل الصفحة.</p>';
+});
+</script>
+</body>
+</html>
